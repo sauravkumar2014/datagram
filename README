@@ -1,0 +1,50 @@
+#	SOCKET PROGRAMMING USING DATAGRAM SOCKET	#
+
+								Client.c
+EXEC COMMAND:
+
+DESCRIPTION:
+	The file consists of 2 major steps:(2)getting socket descriptor and (3)sending/recieving of data packets
+	
+	1.First check if the arguments are -h or the required parameters to run program.
+	  If neither display error message with help.
+	2.First of all we get the address info of the server by using the provided IP address or the hostname.
+	  Next get the socket descriptor.
+	3.Get the file pointer to the file to write to.
+	  Next make a loop for processing 50 datapackets.For each data packet
+		Initialize a pkt type struct to Packet number,time of sending & RC value.
+		Do while RC!=0
+			Convert struct to required array of byte size(Argument given packet size)
+			Send the packet using the address found in step 2
+			Recieve the packet from the server in limited amount of time
+			If delay time > threshold value 
+				Assume packetloss and break loop
+			Else
+				Convert datapacket recieved to struct pkt
+				decrement RC value by 1
+		If packet not dropped
+			Write the required values to file
+		Else
+			Write FAIL
+	4.Delete the servinfo pointer.Close fileptr.Close socket file descriptor.
+
+
+								Echo.c
+EXEC COMMAND:
+
+DESCRIPTION:
+	The file consists of 2 major steps:(1)getting socket descriptor and (2)sending/recieving of data packets
+	
+	1.First of all we set server info using its own IP address.
+	  Next get the socket descriptor using the server address info.
+	  Bind server to the local port for listening.
+	2.Wait for recieving some datapacket.
+	  Continue till infinity(need to hard stop in terminal using CTRL+C)
+			Recieve the packet from client
+			Convert datapacket recieved to struct pkt
+			decrement RC value by 1
+			Convert struct to byte[] of maximumbuffer size
+			Send the packet back to client using the client address stored when recieving
+	3.Delete the servinfo pointer.Close socket file descriptor.
+
+
